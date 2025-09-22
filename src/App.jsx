@@ -40,7 +40,7 @@ function App() {
 
     const addExpense = () =>{
     const text = expenseName.trim();
-    const quantity = incomeQuantity.trim();
+    const quantity = expenseQuantity.trim();
     if (text === "" || quantity === "") return;
     
     const newExpense = {
