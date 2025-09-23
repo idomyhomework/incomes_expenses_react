@@ -6,12 +6,12 @@ import './App.css'
 function App() {
 
   //load from the storage or create an empty array if the user enters for the first time
-  const [income, setIncome] = useState(()=>{
+  const [incomes, setIncome] = useState(()=>{
     const saved_income = localStorage.getItem("incomes");
     return saved_income ? JSON.parse(saved_income) : [];
   });
 
-  const [expense, setExpense] = useState(()=>{
+  const [expenses, setExpense] = useState(()=>{
     const saved_expense = localStorage.getItem("expenses");
     return saved_expense ? JSON.parse(saved_expense) : [];
   })
@@ -33,7 +33,7 @@ function App() {
       quantity: Number(quantity)
     };
     
-    setIncome((prev)=>[[...prev, newIncome]])
+    setIncome((prev)=>[...prev, newIncome]);
     setIncomeName("");
     setIncomeQuantity("");
   };
@@ -49,14 +49,52 @@ function App() {
       quantity: Number(quantity)
     };
     
-    setExpense((prev)=>[[...prev, newExpense]])
+    setExpense((prev)=>[...prev, newExpense]);
     setExpenseName("");
     setExpenseQuantity("");
   };
 
   return (
     <>
-      
+      <h1>Revenue + Expenses Tracker ✅💵</h1>
+      <div className="input-block">
+        {/* revenue input  */}
+        <p>Type your revenue here 👇🏽</p>
+        <div className="revenue-input">
+          <input type="text" placeholder='type the revenue name here...' value={incomeName} onChange={(e)=>{setIncomeName(e.target.value)}}/>
+          <input type="number" min={0} placeholder='type the revenue amount here...' value={incomeQuantity} onChange={(e)=>{setIncomeQuantity(e.target.value)}}/>
+          <button onClick={addIncome}>Add Income</button>
+        </div>
+         {/* expense input  */}
+        <p>Type your expense here 👇🏽</p>
+        <div className="expense-input">
+          <input type="text" placeholder='type the expense name here...' value={expenseName} onChange={(e)=>{setExpenseName(e.target.value)}}/>
+          <input type="number" min={0} placeholder='type the expense amount here...' value={expenseQuantity} onChange={(e)=>{setExpenseQuantity(e.target.value)}}/>
+          <button onClick={addExpense}>Add Expense</button>
+        </div>
+      </div>
+      <div className="tracker-block">
+        {/* list of revenue  */}
+        <ul>
+          {incomes.map((income)=>(
+            <li key={income.id}>
+              <span>{income.name}</span>
+              <span>{income.quantity}</span>
+            </li>
+          ))}
+          <p>Total income: <span>{incomes.reduce((acc, item) => acc + item.quantity, 0)}</span></p>
+        </ul>
+        {/* list of expenses  */}
+        <ul>
+          {expenses.map((expense)=>(
+            <li key={expense.id}>
+              <span>{expense.name}</span>
+              <span>{expense.quantity}</span>
+            </li>
+          ))}
+          <p>Total expenses: <span>{expenses.reduce((acc, item) => acc + item.quantity, 0)}</span></p>
+        </ul>
+      </div>
     </>
   )
 }
