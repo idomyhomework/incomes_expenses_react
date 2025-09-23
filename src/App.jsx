@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
@@ -21,7 +19,7 @@ function App() {
   const [incomeQuantity, setIncomeQuantity] = useState("");
   const [expenseName, setExpenseName] = useState("");
   const [expenseQuantity, setExpenseQuantity] = useState("");
-
+// add income function
   const addIncome = () =>{
     const text = incomeName.trim();
     const quantity = incomeQuantity.trim();
@@ -37,7 +35,7 @@ function App() {
     setIncomeName("");
     setIncomeQuantity("");
   };
-
+// add expense function
     const addExpense = () =>{
     const text = expenseName.trim();
     const quantity = expenseQuantity.trim();
@@ -53,10 +51,28 @@ function App() {
     setExpenseName("");
     setExpenseQuantity("");
   };
+  //delete income
+  const deleteIncome = (id) =>{
+    setIncome((prev)=>prev.filter((income)=> income.id !== id))
+  }
+
+  //delete expense
+  const deleteExpense = (id) =>{
+    setExpense((prev)=>prev.filter((expense)=> expense.id !== id))
+  }
+
+ // save incomes and expenses whenever they change
+  useEffect(()=>{
+    localStorage.setItem("incomes", JSON.stringify(incomes));
+  }, [incomes]);
+
+  useEffect(()=>{
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+  }, [expenses]);
 
   return (
     <>
-      <h1>Revenue + Expenses Tracker ✅💵</h1>
+      <h1>Revenues + Expenses Tracker ✅💵</h1>
       <div className="input-block">
         {/* revenue input  */}
         <p>Type your revenue here 👇🏽</p>
@@ -77,9 +93,10 @@ function App() {
         {/* list of revenue  */}
         <ul>
           {incomes.map((income)=>(
-            <li key={income.id}>
+            <li className='incomes-list' key={income.id}>
               <span>{income.name}</span>
               <span>{income.quantity}</span>
+              <button onClick={() => deleteIncome(income.id)}>❌</button>
             </li>
           ))}
           <p>Total income: <span>{incomes.reduce((acc, item) => acc + item.quantity, 0)}</span></p>
@@ -87,13 +104,24 @@ function App() {
         {/* list of expenses  */}
         <ul>
           {expenses.map((expense)=>(
-            <li key={expense.id}>
+            <li className='expenses-list' key={expense.id}>
               <span>{expense.name}</span>
               <span>{expense.quantity}</span>
+              <button onClick={() => deleteExpense(expense.id)}>❌</button>
             </li>
           ))}
           <p>Total expenses: <span>{expenses.reduce((acc, item) => acc + item.quantity, 0)}</span></p>
         </ul>
+      </div>
+      <div className="summary-block">
+          {(()=> {
+          const total = incomes.reduce((acc, item) => acc + item.quantity, 0) - expenses.reduce((acc, item) => acc + item.quantity, 0);
+          return (
+            <>
+               <h3>Total: <span className={total < 0 ? "negative" : total > 0 ? "positive" : "neutral"}>{total}</span></h3>
+            </>
+          )
+          })()}
       </div>
     </>
   )

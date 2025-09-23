@@ -6,7 +6,7 @@
 }
 
 .input-block input{
-  margin: 0px 12px;
+  margin: 5px 12px;
   padding: 8px 12px;
 }
 
@@ -15,4 +15,30 @@
   margin: 0 auto;
   padding: 0;
   list-style: none;
+}
+
+.incomes-list, .expenses-list {
+  margin-top: 14px;
+}
+
+.incomes-list span, .expenses-list span {
+  margin: 0px 10px;
+}
+
+.incomes-list button, .expenses-list button{
+  border: none;
+  font-size: 0.75em;
+  background-color: transparent;
+}
+
+.positive{
+  color: #78C841;
+}
+
+.negative {
+  color: #FB4141;
+}
+
+.neutral {
+  color: beige;
 }
