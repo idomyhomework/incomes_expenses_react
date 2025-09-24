@@ -42,3 +42,22 @@
 .neutral {
   color: beige;
 }
+
+.recharts-wrapper{
+  margin: 0 auto;
+}
+
+@media (min-width: 320px) {
+  .container{
+    width: 300px;
+    margin: 0 auto;
+  }
+
+  .container h1{
+    font-size: 32px;
+  }
+  .recharts-wrapper{
+    margin: 0 auto;
+    width: 300px;
+  }
+}

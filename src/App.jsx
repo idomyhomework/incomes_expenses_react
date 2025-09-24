@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import BudgetChart from './components/BudgetChart';
 
 function App() {
 
@@ -71,7 +72,7 @@ function App() {
   }, [expenses]);
 
   return (
-    <>
+    <div className='container'>
       <h1>Revenues + Expenses Tracker ✅💵</h1>
       <div className="input-block">
         {/* revenue input  */}
@@ -115,16 +116,21 @@ function App() {
       </div>
       <div className="summary-block">
           {(()=> {
-          const total = incomes.reduce((acc, item) => acc + item.quantity, 0) - expenses.reduce((acc, item) => acc + item.quantity, 0);
+          const total_expenses = expenses.reduce((acc, item) => acc + item.quantity, 0);
+          const total_incomes = incomes.reduce((acc, item) => acc + item.quantity, 0);
+          const total_left = total_incomes - total_expenses;
           return (
             <>
-               <h3>Total: <span className={total < 0 ? "negative" : total > 0 ? "positive" : "neutral"}>{total}</span></h3>
+               <h3>Total: <span className={total_left < 0 ? "negative" : total_left > 0 ? "positive" : "neutral"}>{total_left}</span></h3>
+               <h4>Expenses breakout:</h4><br/>
+                {/* Budget Chart  */}
+                <BudgetChart total_income={total_incomes} />
             </>
           )
           })()}
       </div>
-    </>
+    </div>
   )
 }
 
-export default App
+export default App;
