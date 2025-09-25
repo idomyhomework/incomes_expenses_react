@@ -121,7 +121,7 @@ function App() {
             <li className='expenses-list' key={expense.id}>
               <span>{expense.name}</span>
               <span>{expense.quantity}</span>
-              <span className='category-tag ${expense.category}'>{expense.category}</span>
+              <span className={`category-tag ${expense.category}`}>{expense.category}</span>
               <button onClick={() => deleteExpense(expense.id)}>❌</button>
             </li>
           ))}
@@ -139,12 +139,20 @@ function App() {
           return (
             <>
                <h3>Total: <span className={total_left < 0 ? "negative" : total_left > 0 ? "positive" : "neutral"}>{total_left}</span></h3>
-               <h4>Expenses breakout:</h4><br/>
+              {incomes.length > 0 
+              ? <> 
+                <h4>Expenses breakout:</h4><br/>
                 {/* Budget Chart  */}
                 <p>(This is how you should spend your budget according to 50/30/20)</p>
                 <BudgetChart total_income={total_incomes} />
+                </> : null}
+               {expenses.length > 0 
+               ? 
+              <>
                 <p>This is how you spend your budget</p>
                 <BudgetSpending needs={getTotalByCategory("Needs")} wants={getTotalByCategory("Wants")} savings={getTotalByCategory("Savings")}/>
+              </>
+               :null}
             </>
           )
           })()}

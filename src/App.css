@@ -56,15 +56,15 @@
 }
 
 .category-tag.Needs {
-  background: #FF8042;
+  color: #FF8042;
 }
 
 .category-tag.Wants {
-  background: #0088FE;
+  color: #0088FE;
 }
 
 .category-tag.Savings {
-  background: #00C49F;
+  color: #00C49F;
 }
 
 

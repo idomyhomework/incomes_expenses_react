@@ -14,7 +14,7 @@ function BudgetSpending ({needs = 0, wants = 0, savings = 0}){
             <PieChart width={320} height={400}>
                 <Pie
                     data={data} cx="50%" cy="50%" outerRadius={100}
-                    label = {({name, value}) => `${name}: $${value.toFixed(2)}`} dataKey="value"
+                    label = {({value}) => `$${value.toFixed(2)}`} dataKey="value"
                 >
                 {data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
