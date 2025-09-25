@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import BudgetChart from './components/BudgetChart';
+import BudgetSpending from './components/BudgetSpending';
 
 function App() {
 
@@ -13,13 +14,16 @@ function App() {
   const [expenses, setExpense] = useState(()=>{
     const saved_expense = localStorage.getItem("expenses");
     return saved_expense ? JSON.parse(saved_expense) : [];
-  })
+  });
+
+  const [expenseCategory, setExpenseCategory] = useState("");
 
   //reading input values
   const [incomeName, setIncomeName] = useState("");
   const [incomeQuantity, setIncomeQuantity] = useState("");
   const [expenseName, setExpenseName] = useState("");
   const [expenseQuantity, setExpenseQuantity] = useState("");
+
 // add income function
   const addIncome = () =>{
     const text = incomeName.trim();
@@ -29,28 +33,31 @@ function App() {
     const newIncome = {
       id: crypto.randomUUID(),
       name: text,
-      quantity: Number(quantity)
+      quantity: Number(quantity),
     };
     
     setIncome((prev)=>[...prev, newIncome]);
     setIncomeName("");
     setIncomeQuantity("");
   };
+
 // add expense function
     const addExpense = () =>{
     const text = expenseName.trim();
     const quantity = expenseQuantity.trim();
-    if (text === "" || quantity === "") return;
+    if (text === "" || quantity === "" || expenseCategory === "") return;
     
     const newExpense = {
       id: crypto.randomUUID(),
       name: text,
-      quantity: Number(quantity)
+      quantity: Number(quantity),
+      category: expenseCategory,
     };
     
     setExpense((prev)=>[...prev, newExpense]);
     setExpenseName("");
     setExpenseQuantity("");
+    setExpenseCategory("");
   };
   //delete income
   const deleteIncome = (id) =>{
@@ -87,6 +94,12 @@ function App() {
         <div className="expense-input">
           <input type="text" placeholder='type the expense name here...' value={expenseName} onChange={(e)=>{setExpenseName(e.target.value)}}/>
           <input type="number" min={0} placeholder='type the expense amount here...' value={expenseQuantity} onChange={(e)=>{setExpenseQuantity(e.target.value)}}/>
+          <select value={expenseCategory} onChange={(e)=>setExpenseCategory(e.target.value)}>
+              <option value="">Select Category...</option>
+              <option value="Needs">Needs</option>
+              <option value="Wants">Wants</option>
+              <option value="Savings">Savings</option>
+          </select>
           <button onClick={addExpense}>Add Expense</button>
         </div>
       </div>
@@ -108,6 +121,7 @@ function App() {
             <li className='expenses-list' key={expense.id}>
               <span>{expense.name}</span>
               <span>{expense.quantity}</span>
+              <span className='category-tag ${expense.category}'>{expense.category}</span>
               <button onClick={() => deleteExpense(expense.id)}>❌</button>
             </li>
           ))}
@@ -119,12 +133,18 @@ function App() {
           const total_expenses = expenses.reduce((acc, item) => acc + item.quantity, 0);
           const total_incomes = incomes.reduce((acc, item) => acc + item.quantity, 0);
           const total_left = total_incomes - total_expenses;
+          const getTotalByCategory = (category) =>{
+            return expenses.filter(exp => exp.category === category).reduce((acc, item) => acc + item.quantity, 0)
+          }
           return (
             <>
                <h3>Total: <span className={total_left < 0 ? "negative" : total_left > 0 ? "positive" : "neutral"}>{total_left}</span></h3>
                <h4>Expenses breakout:</h4><br/>
                 {/* Budget Chart  */}
+                <p>(This is how you should spend your budget according to 50/30/20)</p>
                 <BudgetChart total_income={total_incomes} />
+                <p>This is how you spend your budget</p>
+                <BudgetSpending needs={getTotalByCategory("Needs")} wants={getTotalByCategory("Wants")} savings={getTotalByCategory("Savings")}/>
             </>
           )
           })()}

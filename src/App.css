@@ -47,6 +47,27 @@
   margin: 0 auto;
 }
 
+.category-tag {
+  margin-left: 10px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.category-tag.Needs {
+  background: #FF8042;
+}
+
+.category-tag.Wants {
+  background: #0088FE;
+}
+
+.category-tag.Savings {
+  background: #00C49F;
+}
+
+
 @media (min-width: 320px) {
   .container{
     width: 300px;
